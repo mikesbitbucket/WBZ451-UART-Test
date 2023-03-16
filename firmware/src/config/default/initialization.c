@@ -217,9 +217,9 @@ void SYS_Initialize ( void* data )
     EVSYS_Initialize();
 
 	SYSTICK_TimerInitialize();
+	BSP_Initialize();
     TC0_TimerInitialize();
 
-	BSP_Initialize();
 
 
 
