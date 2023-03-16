@@ -57,8 +57,8 @@
   @Remarks
     Any additional remarks
  */
-static uint16_t MySysTick = 0, FlashTick = 0;
-static uint16_t Heartbeat_tmr;
+static uint16_t MySysTick = 0, FlashTick = 0, SecondSysTick = 0;
+static uint16_t Heartbeat_tmr, Second_Heartbeat_tmr;
 static uint8_t LED_Heartbeat_tmr;
 static uint8_t HighVoltage_tmr = 0;
 static uint8_t PWMDuty;
@@ -180,6 +180,11 @@ void IncSysTick( TC_TIMER_STATUS callback, uintptr_t context )
     FlashTick++;
 }
 
+void IncSecondSysTick(SYSTICK_CALLBACK callback, uintptr_t context)
+{
+    SecondSysTick++;
+}
+
 /** 
   @Function
     ClearSysTick 
@@ -217,6 +222,26 @@ uint16_t GetSysTick(void)
     return MySysTick;  // Is this atomic on this processor or do we have to disable interrupts
 }
 
+
+/** 
+  @Function
+    GetSecondSysTick 
+
+  @Summary
+    Gets the current Actual SysTick
+
+  @Remarks
+    Get and return current SysTick
+ */
+uint16_t GetSecondSysTick(void)
+{
+    //uint16_t retval;
+
+    //PIE3bits.TMR0IE = 0; // Shut off interrupt
+    //retval = MySysTick;
+    //PIE3bits.TMR0IE = 1; // turn on interrupt
+    return SecondSysTick;  // Is this atomic on this processor or do we have to disable interrupts
+}
 // *****************************************************************************
 
 /** 
@@ -239,6 +264,16 @@ void DoHeartBeat()
         Heartbeat_tmr = GetSysTick(); // get new time val
         
         USER_LED_Toggle();  // Toogle the Blue LED
+        
+    } // End LED Beat
+    
+    // Second version doing it with SysTick
+    if((uint16_t)(GetSecondSysTick() - Second_Heartbeat_tmr) >= RGB_LED_HEARTBEAT_INTERVAL)
+    {
+        Second_Heartbeat_tmr = GetSecondSysTick(); // get new time val
+        
+        RGB_LED_GREEN_Toggle();
+        RGB_LED_RED_Toggle();
         
     } // End LED Beat
     

@@ -49,8 +49,10 @@ extern "C" {
 
 //void IncSysTick(void);
 void IncSysTick( TC_TIMER_STATUS callback, uintptr_t context );
+void IncSecondSysTick(uintptr_t context);
 void ClearSysTick(void);
 uint16_t GetSysTick(void);
+uint16_t GetSecondSysTick(void);
 void DoHeartBeat(void);
 
 

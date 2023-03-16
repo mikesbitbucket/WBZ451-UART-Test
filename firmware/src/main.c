@@ -47,9 +47,21 @@ int main ( void )
     //w_i = SysTick; // This is for my testing
     TC0_TimerStart();
     
-    // Register Timer Interrupt handler
+    // Start the SysTick System timer
+    SYSTICK_TimerStart();
+    
+    
+    // Register Timer Interrupt Callback
     TC0_TimerCallbackRegister( IncSysTick, (uintptr_t)NULL );
+    
+    // Register the SysTick Interrupt Callback
+    SYSTICK_TimerCallbackSet( IncSecondSysTick, (uintptr_t) NULL );
 
+    
+    // Start with Green on, so they blink opposite
+    RGB_LED_GREEN_On();
+    
+    
     while ( true )
     {
         /* Maintain state machines of all polled MPLAB Harmony modules. */
