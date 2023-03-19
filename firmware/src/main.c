@@ -25,11 +25,14 @@
 #include <stddef.h>                     // Defines NULL
 #include <stdbool.h>                    // Defines true
 #include <stdlib.h>                     // Defines EXIT_FAILURE
+#include <string.h>                     // for strlen
 #include "definitions.h"
 #include "misc.h"                // SYS function prototypes
 
 
 uint32_t w_i;
+size_t Status;
+uint8_t WrBuffer[32];
 
 
 // *****************************************************************************
@@ -60,6 +63,15 @@ int main ( void )
     
     // Start with Green on, so they blink opposite
     RGB_LED_GREEN_On();
+    
+  
+        
+    w_i = sprintf((char*)WrBuffer, "Hello World!\r\n");
+    Status = SERCOM0_USART_Write(WrBuffer, w_i );
+    
+    // another way to write it out
+    Status = SERCOM0_USART_Write((uint8_t*)"Another Hellow World...", sizeof("Another Hellow World...")-1); // Take off 1 - counts the null at end
+        
     
     
     while ( true )
