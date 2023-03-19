@@ -1,1 +1,1 @@
-# Code for Stand Alone NiMh Charger test board.
+# Various Functions for the WBZ451 Curiostiy Board
