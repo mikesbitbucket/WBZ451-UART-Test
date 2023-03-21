@@ -62,7 +62,7 @@ int main ( void )
 
     
     // Start with Green on, so they blink opposite
-    RGB_LED_GREEN_On();
+    //RGB_LED_GREEN_On();
     
   
         

@@ -257,13 +257,15 @@ uint16_t GetSecondSysTick(void)
 
 void DoHeartBeat()
 {
-
+    static size_t counter = 0;
+    
     // Heartbeat check - Also the Blink Status of the LED
     if((uint16_t)(GetSysTick() - Heartbeat_tmr) >= LED_HEARTBEAT_INTERVAL)
     {
         Heartbeat_tmr = GetSysTick(); // get new time val
         
-        USER_LED_Toggle();  // Toogle the Blue LED
+        USER_LED_Toggle();  // Toggle the Blue LED
+        //RGB_LED_BLUE_Toggle();
         
     } // End LED Beat
     
@@ -271,9 +273,64 @@ void DoHeartBeat()
     if((uint16_t)(GetSecondSysTick() - Second_Heartbeat_tmr) >= RGB_LED_HEARTBEAT_INTERVAL)
     {
         Second_Heartbeat_tmr = GetSecondSysTick(); // get new time val
-        
-        RGB_LED_GREEN_Toggle();
-        RGB_LED_RED_Toggle();
+        switch(counter)
+        {
+            case 0:
+            {
+                RGB_LED_RED_On();
+                RGB_LED_GREEN_Off();
+                RGB_LED_BLUE_Off();
+                counter = 1;
+                break;
+            }
+            case 1:
+            {
+                RGB_LED_RED_On();
+                RGB_LED_GREEN_On();
+                RGB_LED_BLUE_Off();
+                counter = 2;
+                break;
+            }
+            case 2:
+            {
+                RGB_LED_RED_Off();
+                RGB_LED_GREEN_On();
+                RGB_LED_BLUE_Off();
+                counter = 3;
+                break;
+            }
+            case 3:
+            {
+                RGB_LED_RED_Off();
+                RGB_LED_GREEN_On();
+                RGB_LED_BLUE_On();
+                counter = 4;
+                break;
+            }
+            case 4:
+            {
+                RGB_LED_RED_Off();
+                RGB_LED_GREEN_Off();
+                RGB_LED_BLUE_On();
+                counter = 5;
+                break;
+            }
+            case 5:
+            {
+                RGB_LED_RED_On();
+                RGB_LED_GREEN_Off();
+                RGB_LED_BLUE_On();
+                counter = 0;
+                break;
+            }
+            default:
+            {
+                counter = 0;
+                break;
+            }
+        }
+        //RGB_LED_GREEN_Toggle();
+        //RGB_LED_RED_Toggle();
         
     } // End LED Beat
     
